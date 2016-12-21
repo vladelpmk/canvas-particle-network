@@ -97,25 +97,6 @@
       'z-index': 1
     });
 
-    // Check if valid background hex color
-    if ((/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i).test(this.options.background)) {
-      this.setStyles(this.bgDiv, {
-        'background': this.options.background
-      });
-    }
-    // Else check if valid image
-    else if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(this.options.background)) {
-      this.setStyles(this.bgDiv, {
-        'background': 'url("' + this.options.background + '") no-repeat center',
-        'background-size': 'cover'
-      });
-    }
-    // Else throw error
-    else {
-      console.error('Please specify a valid background image or hexadecimal color');
-      return false;
-    }
-
     // Check if valid particleColor
     if (!(/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i).test(this.options.particleColor)) {
       console.error('Please specify a valid particleColor hexadecimal color');
@@ -128,9 +109,8 @@
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = this.canvasDiv.size.width;
     this.canvas.height = this.canvasDiv.size.height;
-    this.setStyles(this.canvasDiv, { 'position': 'relative' });
     this.setStyles(this.canvas, {
-      'z-index': '20',
+      'z-index': '1',
       'position': 'relative'
     });
 
@@ -181,25 +161,6 @@
         y: 0
       };
       this.particles.push(this.mouseParticle);
-
-      // Mouse event listeners
-      this.canvas.addEventListener('mousemove', function (e) {
-        this.mouseParticle.x = e.clientX - this.canvas.offsetLeft;
-        this.mouseParticle.y = e.clientY - this.canvas.offsetTop;
-      }.bind(this));
-
-      this.canvas.addEventListener('mouseup', function (e) {
-        this.mouseParticle.velocity = {
-          x: (Math.random() - 0.5) * this.options.velocity,
-          y: (Math.random() - 0.5) * this.options.velocity
-        };
-        this.mouseParticle = new Particle(this);
-        this.mouseParticle.velocity = {
-          x: 0,
-          y: 0
-        };
-        this.particles.push(this.mouseParticle);
-      }.bind(this));
     }
 
     // Update canvas
